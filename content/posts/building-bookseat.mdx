@@ -1,0 +1,26 @@
+---
+title: "Building BookSeat — a Nigerian event ticketing platform"
+date: "2025-03-10"
+summary: "What I learned shipping a full event ticketing platform with React, Firebase, and Paystack from scratch."
+tags: ["React", "Firebase", "Paystack", "Product"]
+featured: true
+---
+
+## Why BookSeat
+
+Nigeria has a real ticketing problem. Most events still sell tickets via DMs and bank transfers.
+BookSeat was my attempt at a proper solution — QR e-tickets, organiser dashboards, real payment flow.
+
+## The stack decision
+
+I went with React 18 and Firebase because the real-time database fit perfectly for live ticket inventory.
+Paystack was the only real choice for Nigerian payments.
+
+## The hardest part
+
+QR code validation on the door. The scanner had to work offline, sync when back online, and prevent duplicate scans.
+I solved it with a local validation cache and a background sync queue.
+
+## What I'd do differently
+
+Start with the organiser dashboard, not the buyer flow. The organiser is the real customer.

@@ -1,0 +1,27 @@
+---
+title: "Building a live health monitor with ESP32 and Firebase"
+date: "2024-11-20"
+summary: "How I wired up a MAX30102 pulse oximeter and MAX6675 thermocouple to stream live readings to a web dashboard."
+tags: ["ESP32", "Firebase", "Embedded", "C++"]
+featured: false
+---
+
+## The hardware setup
+
+Two sensors — MAX6675 for temperature via SPI, MAX30102 for pulse and SpO2 via I2C.
+The ESP32 reads both, formats the data as JSON, and POSTs to a Railway backend every 2 seconds.
+
+## The firmware challenge
+
+The MAX30102 library had a known bug with the interrupt pin on the ESP32-WROOM.
+I had to implement the read loop manually using bit manipulation on the FIFO register.
+
+## The dashboard
+
+Plain HTML, CSS, and JS — no framework. The dashboard polls the Railway endpoint,
+detects stale readings if the ESP32 goes offline, and shows a visual warning.
+
+## Key lesson
+
+Always build the hardware and software in parallel. I wasted a week building a perfect
+dashboard before confirming the sensor data was even accurate.
