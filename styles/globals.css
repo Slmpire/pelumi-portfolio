@@ -1,0 +1,32 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme inline {
+  --color-brand-coral: #FF4D3D;
+  --color-brand-lime:  #C8F135;
+  --color-brand-slate: #1A1A2E;
+  --color-brand-mist:  #F5F5F0;
+  --color-brand-ink:   #0D0D0D;
+
+  --font-sans:    var(--font-sans);
+  --font-mono:    ui-monospace, monospace;
+  --font-display: var(--font-display);
+}
+
+@layer base {
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+  }
+
+  ::selection {
+    background: #C8F135;
+    color: #0D0D0D;
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #F5F5F0; }
+  ::-webkit-scrollbar-thumb { background: #1A1A2E; border-radius: 2px; }
+}
