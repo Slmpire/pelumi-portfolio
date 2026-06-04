@@ -1,8 +1,13 @@
 import type { Metadata } from "next"
-import { Plus_Jakarta_Sans, Instrument_Serif } from "next/font/google"
+
 import "@/styles/globals.css"
+import { ThemeProvider } from "@/app/theme-provider"
 import Navbar from "@/components/layout/Navbar"
 import Footer from "@/components/layout/Footer"
+import Grain from "@/components/ui/Grain"
+import Cursor from "@/components/ui/Cursor"
+import SmoothScroll from "@/components/ui/SmoothScroll"
+import { Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google"
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -10,11 +15,10 @@ const jakarta = Plus_Jakarta_Sans({
   weight: ["300", "400", "500", "600", "700", "800"],
 })
 
-const instrument = Instrument_Serif({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["400"],
-  style: ["normal", "italic"],
+  weight: ["300", "400", "500", "600", "700"],
 })
 
 export const metadata: Metadata = {
@@ -22,39 +26,35 @@ export const metadata: Metadata = {
     default: "Pelumi Ogunleye — Full-Stack Developer",
     template: "%s — Pelumi Ogunleye",
   },
-  description: "Full-stack developer and EEE student at OAU building products end-to-end — from embedded systems to production web apps.",
+  description: "Full-stack developer and EEE student at OAU building products end-to-end.",
   metadataBase: new URL("https://pelumi.dev"),
-  openGraph: {
-    siteName: "Pelumi Ogunleye",
-    locale: "en_NG",
-    type: "website",
-  },
+  openGraph: { siteName: "Pelumi Ogunleye", locale: "en_NG", type: "website" },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${jakarta.variable} ${instrument.variable}`}>
-      <body className="bg-(--color-brand-mist) text-(--color-brand-ink) antialiased">
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+    <html lang="en" className={`${jakarta.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
+      <body>
+        <ThemeProvider>
+          <SmoothScroll>
+            <Grain />
+            <Cursor />
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+          </SmoothScroll>
+        </ThemeProvider>
         <script
-          type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              name: "Pelumi Ogunleye",
-              url: "https://pelumi.dev",
-              jobTitle: "Full-Stack Developer",
-              alumniOf: {
-                "@type": "CollegeOrUniversity",
-                name: "Obafemi Awolowo University",
-              },
-              sameAs: ["https://github.com/Slmpire"],
-            }),
+            __html: `
+              try {
+                const t = localStorage.getItem('theme') ||
+                  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', t);
+              } catch(e) {}
+            `,
           }}
         />
       </body>

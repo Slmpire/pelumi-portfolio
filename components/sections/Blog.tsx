@@ -2,24 +2,31 @@ import { getAllPosts } from "@/lib/mdx"
 import BlogCard from "@/components/ui/BlogCard"
 import Link from "next/link"
 
-export default function BlogSection() {
+export default async function BlogSection() {
   const posts = getAllPosts().slice(0, 3)
 
   return (
     <section id="blog" className="py-32 px-6 max-w-6xl mx-auto">
 
-      <p className="text-sm font-medium tracking-widest uppercase text-(--color-brand-coral) mb-4">
+      <p
+        className="text-sm font-medium tracking-widest uppercase mb-4"
+        style={{ color: "var(--coral)" }}
+      >
         Writing
       </p>
 
       <div className="flex items-end justify-between mb-16">
-        <h2 className="font-display font-extrabold text-5xl md:text-7xl text-(--color-brand-ink) leading-none">
+        <h2
+          className="font-display font-bold leading-none"
+          style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)", color: "var(--ink)" }}
+        >
           Latest{" "}
-          <span className="text-(--color-brand-coral)">posts.</span>
+          <span style={{ color: "var(--coral)" }}>posts.</span>
         </h2>
         <Link
           href="/blog"
-          className="text-sm font-medium text-(--color-brand-ink)/50 hover:text-(--color-brand-ink) transition-colors hidden sm:block"
+          className="text-sm font-medium hidden sm:block hover:underline"
+          style={{ color: "var(--ink-muted)" }}
         >
           All posts →
         </Link>
@@ -33,7 +40,8 @@ export default function BlogSection() {
 
       <Link
         href="/blog"
-        className="mt-8 inline-block text-sm font-medium text-(--color-brand-coral) hover:underline sm:hidden"
+        className="mt-8 inline-block text-sm font-medium hover:underline sm:hidden"
+        style={{ color: "var(--coral)" }}
       >
         All posts →
       </Link>
