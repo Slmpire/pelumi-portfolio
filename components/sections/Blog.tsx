@@ -2,41 +2,113 @@ import { getAllPosts } from "@/lib/mdx"
 import BlogCard from "@/components/ui/BlogCard"
 import Link from "next/link"
 
-export default function BlogSection() {
+export default async function BlogSection() {
   const posts = getAllPosts().slice(0, 3)
 
   return (
-    <section id="blog" className="py-32 px-6 max-w-6xl mx-auto">
+    <section
+      id="blog"
+      className="relative py-32 overflow-hidden"
+    >
+      {/* Background Glow */}
+      <div
+        className="absolute top-20 right-[-10%] w-[600px] h-[600px] rounded-full blur-[180px] pointer-events-none -z-10"
+        style={{ background: "var(--glow-coral)" }}
+      />
 
-      <p className="text-sm font-medium tracking-widest uppercase text-(--color-brand-coral) mb-4">
-        Writing
-      </p>
+      <div className="max-w-6xl mx-auto px-6">
 
-      <div className="flex items-end justify-between mb-16">
-        <h2 className="font-display font-extrabold text-5xl md:text-7xl text-(--color-brand-ink) leading-none">
-          Latest{" "}
-          <span className="text-(--color-brand-coral)">posts.</span>
-        </h2>
-        <Link
-          href="/blog"
-          className="text-sm font-medium text-(--color-brand-ink)/50 hover:text-(--color-brand-ink) transition-colors hidden sm:block"
+        {/* Label */}
+        <p
+          className="text-xs font-semibold tracking-[0.25em] uppercase mb-4"
+          style={{ color: "var(--coral)" }}
         >
-          All posts →
-        </Link>
-      </div>
+          Writing
+        </p>
 
-      <div className="space-y-4">
-        {posts.map((post, i) => (
-          <BlogCard key={post.slug} post={post} index={i} />
-        ))}
-      </div>
+        {/* Heading */}
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">
 
-      <Link
-        href="/blog"
-        className="mt-8 inline-block text-sm font-medium text-(--color-brand-coral) hover:underline sm:hidden"
-      >
-        All posts →
-      </Link>
+          <div>
+            <h2
+              className="font-display font-bold leading-none tracking-tight"
+              style={{
+                fontSize: "clamp(3rem, 7vw, 6rem)",
+                color: "var(--ink)",
+              }}
+            >
+              Latest
+            </h2>
+
+            <h2
+              className="font-display font-bold leading-none tracking-tight"
+              style={{
+                fontSize: "clamp(3rem, 7vw, 6rem)",
+                color: "var(--coral)",
+              }}
+            >
+              posts.
+            </h2>
+          </div>
+
+          <Link
+            href="/blog"
+            className="hidden sm:block text-sm font-semibold hover:underline"
+            style={{ color: "var(--ink-muted)" }}
+          >
+            View all posts →
+          </Link>
+        </div>
+
+        {/* Intro */}
+        <p
+          className="max-w-2xl text-lg leading-relaxed mb-14"
+          style={{ color: "var(--ink-muted)" }}
+        >
+          Thoughts on software engineering, startups,
+          product design, systems thinking, and lessons
+          learned while building things on the internet.
+        </p>
+
+        {/* Posts */}
+        <div className="space-y-4">
+          {posts.map((post, index) => (
+            <BlogCard
+              key={post.slug}
+              post={post}
+              index={index}
+            />
+          ))}
+        </div>
+
+        {/* Mobile CTA */}
+        <div className="mt-10 sm:hidden">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-sm font-semibold"
+            style={{ color: "var(--coral)" }}
+          >
+            View all posts →
+          </Link>
+        </div>
+
+        {/* Bottom Divider */}
+        <div
+          className="mt-24 pt-10"
+          style={{
+            borderTop: "1px solid var(--border)",
+          }}
+        >
+          <p
+            className="text-sm"
+            style={{ color: "var(--ink-faint)" }}
+          >
+            New articles, case studies, engineering notes,
+            and project breakdowns published regularly.
+          </p>
+        </div>
+
+      </div>
     </section>
   )
 }

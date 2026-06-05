@@ -6,77 +6,116 @@ import { useState } from "react"
 import { cn } from "@/lib/cn"
 import type { Project, ProjectType } from "@/data/projects"
 
-const typeConfig: Record<ProjectType, { color: string; banner: string; emoji: string }> = {
-  Web:      { color: "bg-blue-50 text-blue-600",    banner: "from-blue-400 to-indigo-500",    emoji: "🌐" },
-  Embedded: { color: "bg-orange-50 text-orange-600", banner: "from-orange-400 to-amber-500",   emoji: "⚡" },
-  Fintech:  { color: "bg-green-50 text-green-700",   banner: "from-green-400 to-emerald-500",  emoji: "💰" },
-  AI:       { color: "bg-purple-50 text-purple-600", banner: "from-purple-400 to-violet-500",  emoji: "🤖" },
+const typeConfig: Record<ProjectType, { color: string; bg: string; emoji: string }> = {
+  Web:      { color: "#3b82f6", bg: "rgba(59,130,246,0.12)",  emoji: "🌐" },
+  Embedded: { color: "#f59e0b", bg: "rgba(245,158,11,0.12)",  emoji: "⚡" },
+  Fintech:  { color: "#10b981", bg: "rgba(16,185,129,0.12)",  emoji: "💰" },
+  AI:       { color: "#a78bfa", bg: "rgba(167,139,250,0.12)", emoji: "🤖" },
 }
 
-export default function ProjectCard({ project, index }: { project: Project; index: number }) {
+export default function ProjectCard({
+  project,
+  index,
+}: {
+  project: Project
+  index: number
+}) {
   const [preview, setPreview] = useState(false)
-  const config = typeConfig[project.type]
+  const cfg = typeConfig[project.type]
 
   return (
     <>
       <motion.div
-        initial={{ opacity: 0, y: 32 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: index * 0.08 }}
-        className="group border border-(--color-brand-ink)/10 rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white"
+        whileHover={{ y: -4 }}
+        transition={{ duration: 0.2 }}
+        className="group relative flex flex-col rounded-2xl overflow-hidden h-full"
+        style={{
+          background: "var(--surface)",
+          border: "1px solid var(--border)",
+        }}
       >
-        {/* Gradient banner */}
-        <div className={`h-32 bg-gradient-to-br ${config.banner} relative overflow-hidden`}>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-6xl opacity-20">{config.emoji}</span>
-          </div>
-          <div className="absolute inset-0 bg-black/10" />
-          {/* Stack pills on banner */}
+        {/* Colored top bar */}
+        <div
+          className="h-1 w-full"
+          style={{ background: cfg.color }}
+        />
+
+        {/* Banner */}
+        <div
+          className="h-28 flex items-center justify-center relative overflow-hidden"
+          style={{ background: cfg.bg }}
+        >
+          <span className="text-5xl opacity-40 group-hover:opacity-70 group-hover:scale-110 transition-all duration-500">
+            {cfg.emoji}
+          </span>
+
+          {/* Stack pills */}
           <div className="absolute bottom-3 left-4 flex flex-wrap gap-1.5">
             {project.stack.slice(0, 3).map((tech) => (
-              <span key={tech} className="text-xs font-medium px-2 py-0.5 rounded-full bg-white/20 text-white backdrop-blur-sm">
+              <span
+                key={tech}
+                className="text-[10px] font-medium px-2 py-0.5 rounded-full"
+                style={{
+                  background: "rgba(0,0,0,0.25)",
+                  color: "rgba(255,255,255,0.7)",
+                  backdropFilter: "blur(4px)",
+                }}
+              >
                 {tech}
               </span>
             ))}
             {project.stack.length > 3 && (
-              <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-white/20 text-white backdrop-blur-sm">
+              <span
+                className="text-[10px] font-medium px-2 py-0.5 rounded-full"
+                style={{
+                  background: "rgba(0,0,0,0.25)",
+                  color: "rgba(255,255,255,0.7)",
+                }}
+              >
                 +{project.stack.length - 3}
               </span>
             )}
           </div>
         </div>
 
-        {/* Card body */}
-        <div className="p-5 flex flex-col gap-3">
-          <div className="flex items-start justify-between">
-            <span className={cn("px-2.5 py-0.5 text-xs font-medium rounded-full", config.color)}>
+        {/* Body */}
+        <div className="flex flex-col gap-3 p-5 flex-1">
+          <div className="flex items-center justify-between">
+            <span
+              className="text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full"
+              style={{ background: cfg.bg, color: cfg.color }}
+            >
               {project.type}
             </span>
-            <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              {project.github && (
-                <Link href={project.github} target="_blank" className="text-xs text-(--color-brand-ink)/40 hover:text-(--color-brand-ink) transition-colors">
-                  GitHub ↗
-                </Link>
-              )}
-            </div>
+            <div
+              className="w-2 h-2 rounded-full"
+              style={{ background: cfg.color }}
+            />
           </div>
 
-          <h3 className="font-bold text-lg text-(--color-brand-ink) group-hover:text-(--color-brand-coral) transition-colors leading-tight">
+          <h3
+            className="font-display font-bold text-lg leading-tight group-hover:transition-colors duration-200"
+            style={{ color: "var(--ink)" }}
+          >
             {project.title}
           </h3>
 
-          <p className="text-sm text-(--color-brand-ink)/50 leading-relaxed line-clamp-3">
+          <p
+            className="text-sm leading-relaxed flex-1 line-clamp-3"
+            style={{ color: "var(--ink-muted)" }}
+          >
             {project.longDesc}
           </p>
 
-          <div className="flex gap-2 pt-1 mt-auto">
+          {/* CTA row */}
+          <div className="flex gap-2 pt-2 mt-auto">
             {project.live && (
               <button
                 onClick={() => setPreview(true)}
-                className="flex-1 py-2 bg-(--color-brand-ink) text-(--color-brand-mist) text-xs font-semibold rounded-xl hover:bg-(--color-brand-coral) transition-colors duration-300"
+                className="flex-1 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 hover:opacity-90"
+                style={{ background: cfg.color, color: "#fff" }}
               >
-                View demo
+                Live demo
               </button>
             )}
             {project.github && (
@@ -84,15 +123,25 @@ export default function ProjectCard({ project, index }: { project: Project; inde
                 href={project.github}
                 target="_blank"
                 className={cn(
-                  "py-2 text-xs font-semibold rounded-xl border border-(--color-brand-ink)/10 hover:border-(--color-brand-ink)/30 transition-colors text-center text-(--color-brand-ink)/60",
+                  "py-2.5 rounded-xl text-xs font-bold text-center transition-all duration-200",
                   project.live ? "px-4" : "flex-1"
                 )}
+                style={{
+                  background: "var(--bg-subtle)",
+                  color: "var(--ink-muted)",
+                  border: "1px solid var(--border)",
+                }}
               >
                 Source
               </Link>
             )}
             {!project.live && !project.github && (
-              <span className="text-xs text-(--color-brand-ink)/30 italic py-2">Coming soon</span>
+              <span
+                className="text-xs py-2"
+                style={{ color: "var(--ink-faint)" }}
+              >
+                Coming soon
+              </span>
             )}
           </div>
         </div>
@@ -105,36 +154,60 @@ export default function ProjectCard({ project, index }: { project: Project; inde
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-(--color-brand-ink)/60 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ background: "rgba(0,0,0,0.8)", backdropFilter: "blur(8px)" }}
             onClick={() => setPreview(false)}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 16 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 16 }}
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1,    y: 0  }}
+              exit={{   opacity: 0, scale: 0.95,   y: 20 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full max-w-5xl bg-white rounded-2xl overflow-hidden shadow-2xl"
+              className="w-full max-w-5xl rounded-2xl overflow-hidden shadow-2xl"
+              style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-center justify-between px-5 py-3 border-b border-(--color-brand-ink)/10">
+              {/* Modal header */}
+              <div
+                className="flex items-center justify-between px-5 py-3"
+                style={{ borderBottom: "1px solid var(--border)" }}
+              >
                 <div className="flex items-center gap-3">
-                  <span className="font-bold text-(--color-brand-ink)">{project.title}</span>
-                  <span className={cn("px-2 py-0.5 text-xs font-medium rounded-full", config.color)}>
+                  <span
+                    className="font-bold text-sm"
+                    style={{ color: "var(--ink)" }}
+                  >
+                    {project.title}
+                  </span>
+                  <span
+                    className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                    style={{ background: cfg.bg, color: cfg.color }}
+                  >
                     {project.type}
                   </span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Link href={project.live} target="_blank" className="text-xs text-(--color-brand-coral) font-medium hover:underline">
+                <div className="flex items-center gap-4">
+                  <Link
+                    href={project.live}
+                    target="_blank"
+                    className="text-xs font-medium hover:underline"
+                    style={{ color: "var(--coral)" }}
+                  >
                     Open in new tab ↗
                   </Link>
                   <button
                     onClick={() => setPreview(false)}
-                    className="w-7 h-7 rounded-full bg-(--color-brand-ink)/5 hover:bg-(--color-brand-ink)/10 transition-colors flex items-center justify-center text-(--color-brand-ink)/60 text-sm"
+                    className="w-7 h-7 rounded-full flex items-center justify-center text-sm transition-colors"
+                    style={{
+                      background: "var(--bg-subtle)",
+                      color: "var(--ink-muted)",
+                    }}
                   >
                     ✕
                   </button>
                 </div>
               </div>
+
               <iframe
                 src={project.live}
                 className="w-full border-0"

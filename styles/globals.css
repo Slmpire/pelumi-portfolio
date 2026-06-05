@@ -2,31 +2,63 @@
 @plugin "@tailwindcss/typography";
 
 @theme inline {
-  --color-brand-coral: #FF4D3D;
-  --color-brand-lime:  #C8F135;
-  --color-brand-slate: #1A1A2E;
-  --color-brand-mist:  #F5F5F0;
-  --color-brand-ink:   #0D0D0D;
-
   --font-sans:    var(--font-sans);
   --font-mono:    ui-monospace, monospace;
   --font-display: var(--font-display);
 }
 
+/* ── Light theme (default) ── */
+:root,
+[data-theme="light"] {
+  --bg:          #F5F5F0;
+  --bg-subtle:   #EFEFEA;
+  --surface:     #FFFFFF;
+  --border:      rgba(13, 13, 13, 0.08);
+  --ink:         #0D0D0D;
+  --ink-muted:   rgba(13, 13, 13, 0.5);
+  --ink-faint:   rgba(13, 13, 13, 0.2);
+  --coral:       #FF4D3D;
+  --lime:        #C8F135;
+  --slate:       #1A1A2E;
+  --grain:       0.03;
+  --glow-coral:  rgba(255, 77, 61, 0.12);
+  --glow-lime:   rgba(200, 241, 53, 0.15);
+}
+
+/* ── Dark theme ── */
+[data-theme="dark"] {
+  --bg:          #0A0A0A;
+  --bg-subtle:   #111111;
+  --surface:     #161616;
+  --border:      rgba(255, 255, 255, 0.07);
+  --ink:         #F0F0EC;
+  --ink-muted:   rgba(240, 240, 236, 0.45);
+  --ink-faint:   rgba(240, 240, 236, 0.15);
+  --coral:       #FF5A4A;
+  --lime:        #C8F135;
+  --slate:       #E8E8E4;
+  --grain:       0.045;
+  --glow-coral:  rgba(255, 90, 74, 0.18);
+  --glow-lime:   rgba(200, 241, 53, 0.12);
+}
+
 @layer base {
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--ink);
+    transition: background 0.4s ease, color 0.4s ease;
   }
 
   ::selection {
-    background: #C8F135;
+    background: var(--lime);
     color: #0D0D0D;
   }
 
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: #F5F5F0; }
-  ::-webkit-scrollbar-thumb { background: #1A1A2E; border-radius: 2px; }
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--ink-faint); border-radius: 2px; }
 }
