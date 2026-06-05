@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect } from "react"
+import Image from "next/image"
 
 export default function EntryGate({ onEnter }: { onEnter: () => void }) {
   const [hovered, setHovered] = useState(false)
@@ -55,19 +56,30 @@ export default function EntryGate({ onEnter }: { onEnter: () => void }) {
             className="relative z-10 flex flex-col items-center gap-8"
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="w-20 h-20 rounded-full flex items-center justify-center"
-              style={{ border: "1.5px solid rgba(255,77,61,0.4)", background: "rgba(255,77,61,0.06)" }}
-            >
-              <span
-                className="font-display font-bold text-2xl"
-                style={{ color: "#FF4D3D" }}
-              >
-                PO
-              </span>
-            </motion.div>
+  initial={{ opacity: 0, scale: 0.8 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+  className="w-24 h-24 rounded-full overflow-hidden flex-shrink-0"
+  style={{ border: "1.5px solid rgba(255,77,61,0.5)" }}
+>
+  <Image
+    src="/images/profile.jpg"
+    alt="Pelumi Ogunleye"
+    width={96}
+    height={96}
+    className="object-cover w-full h-full"
+    onError={(e) => {
+      (e.target as HTMLImageElement).style.display = "none"
+    }}
+  />
+  {/* Fallback if no photo */}
+  <div
+    className="w-full h-full flex items-center justify-center"
+    style={{ background: "rgba(255,77,61,0.1)" }}
+  >
+    <span className="font-display font-bold text-xl" style={{ color: "#FF4D3D" }}>PO</span>
+  </div>
+</motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 16 }}
